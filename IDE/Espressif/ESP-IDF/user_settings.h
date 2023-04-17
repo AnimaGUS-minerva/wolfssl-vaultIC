@@ -93,7 +93,7 @@
     /* Define USE_FAST_MATH and SMALL_STACK                        */
     #define ESP32_USE_RSA_PRIMITIVE
     /* threshold for performance adjustment for hw primitive use   */
-    /* X bits of G^X mod P greater than                            */ 
+    /* X bits of G^X mod P greater than                            */
     #define EPS_RSA_EXPT_XBTIS           36
     /* X and Y of X * Y mod P greater than                         */
     #define ESP_RSA_MULM_BITS            2000

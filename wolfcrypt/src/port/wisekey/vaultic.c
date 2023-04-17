@@ -5,7 +5,7 @@
 
 #ifndef HAVE_PK_CALLBACKS
 #error Please define HAVE_PK_CALLBACKS in compiling options
-#endif 
+#endif
 #include <wolfssl/wolfcrypt/port/wisekey/vaultic.h>
 #include <wolfssl/wolfcrypt/port/wisekey/vaultic_tls.h>
 
@@ -118,7 +118,7 @@ int WOLFSSL_VAULTIC_EccVerifyCb(WOLFSSL* ssl,
         wc_ecc_free(&key);
         return NOT_COMPILED_IN ;
     }
-        
+
     /* Extract R and S from signature */
     XMEMSET(signature, 0, sizeof(signature));
     r = &signature[0];
@@ -128,7 +128,7 @@ int WOLFSSL_VAULTIC_EccVerifyCb(WOLFSSL* ssl,
     if(err !=0) {
         VAULTIC_LOG("ERROR: wc_ecc_sig_to_rs\n");
     }
-        
+
     /* Verify signature with VaultIC */
     if (vlt_tls_verify_signature_P256(hash, hashSz, signature, pubKeyX, pubKeyY) != 0) {
         VAULTIC_LOG("ERROR: vault_tls_verify_signature_P256\n");
@@ -227,19 +227,19 @@ int WOLFSSL_VAULTIC_EccSharedSecretCb(WOLFSSL* ssl, ecc_key* otherPubKey,
             if ( (err = wc_ecc_init(&tmpKey)) != 0) {
                 VAULTIC_LOG("ERROR: wc_ecc_init\n");
                 return err;
-            }            
-            
+            }
+
             if( (err = wc_ecc_import_unsigned(&tmpKey, pubKeyX, pubKeyY,
                 NULL, ECC_SECP256R1)) != 0) {
                 VAULTIC_LOG("ERROR: wc_ecc_import_unsigned\n");
-            }                    
+            }
 
             if (err == 0) {
                 if( (err = wc_ecc_export_x963(&tmpKey, pubKeyDer, pubKeySz)) !=0) {
                     VAULTIC_LOG("ERROR: wc_ecc_import_unsigned\n");
                 }
-            }                    
-                
+            }
+
             wc_ecc_free(&tmpKey);
         }
     }
@@ -249,13 +249,13 @@ int WOLFSSL_VAULTIC_EccSharedSecretCb(WOLFSSL* ssl, ecc_key* otherPubKey,
         if ( (err = wc_ecc_init(&tmpKey)) != 0) {
             VAULTIC_LOG("ERROR: wc_ecc_init\n");
             return err;
-        }            
+        }
 
         /* import peer's key and export as raw unsigned for hardware */
         if( (err = wc_ecc_import_x963_ex(pubKeyDer, *pubKeySz, &tmpKey, ECC_SECP256R1))!=0) {
             VAULTIC_LOG("ERROR: wc_ecc_import_x963_ex\n");
         }
-        
+
         if (err == 0) {
             if( (err = wc_ecc_export_public_raw(&tmpKey, otherPubKeyX, &otherPubKeyX_len,
                 otherPubKeyY, &otherPubKeyY_len)) !=0 ) {
@@ -283,10 +283,10 @@ int WOLFSSL_VAULTIC_EccSharedSecretCb(WOLFSSL* ssl, ecc_key* otherPubKey,
 /**
  * \brief Read VaultIC Certificates and add them to wolfssk context
  */
-int WOLFSSL_VAULTIC_LoadCertificates(WOLFSSL_CTX* ctx) 
+int WOLFSSL_VAULTIC_LoadCertificates(WOLFSSL_CTX* ctx)
 {
     int ret = -1;
-    
+
     // CA certificate
     unsigned char *ca_cert= NULL;
     int sizeof_ca_cert=0;
@@ -294,7 +294,7 @@ int WOLFSSL_VAULTIC_LoadCertificates(WOLFSSL_CTX* ctx)
     // Client certificate
     unsigned char *client_cert= NULL;
     int sizeof_client_cert=0;
-    
+
     /* Read Client certificate in VaultIC */
     VAULTIC_LOG("Read Client Certificate in VaultIC\n");
     if ((sizeof_client_cert = vlt_tls_get_cert_size(SSL_VIC_CLIENT_CERT)) == -1) {
@@ -344,13 +344,13 @@ int WOLFSSL_VAULTIC_LoadCertificates(WOLFSSL_CTX* ctx)
         VAULTIC_LOG("ERROR: failed to load client certificate %s",wc_GetErrorString(ret));
         goto free_cert_buffers;
     }
-    
+
     /* VaultIC certificates successfully injected into wolfSSL */
     ret = 0;
 
 free_cert_buffers:
     if(client_cert != NULL) XFREE(client_cert,NULL, DYNAMIC_TYPE_ECC_BUFFER);
-    
+
     return ret;
 }
 
@@ -360,7 +360,7 @@ int WOLFSSL_VAULTIC_SetupPkCallbacks(WOLFSSL_CTX* ctx)
     wolfSSL_CTX_SetEccSignCb(ctx, WOLFSSL_VAULTIC_EccSignCb);
     wolfSSL_CTX_SetEccVerifyCb(ctx, WOLFSSL_VAULTIC_EccVerifyCb);
 #ifndef WOLFSSL_VAULTIC_NO_ECDH
-    wolfSSL_CTX_SetEccKeyGenCb(ctx, WOLFSSL_VAULTIC_EccKeyGenCb);    
+    wolfSSL_CTX_SetEccKeyGenCb(ctx, WOLFSSL_VAULTIC_EccKeyGenCb);
     wolfSSL_CTX_SetEccSharedSecretCb(ctx, WOLFSSL_VAULTIC_EccSharedSecretCb);
 #endif
     return 0;

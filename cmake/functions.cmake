@@ -864,10 +864,10 @@ function(generate_lib_src_list LIB_SOURCES)
     if(BUILD_CRYPTOAUTHLIB)
         list(APPEND LIB_SOURCES wolfcrypt/src/port/atmel/atmel.c)
     endif()
-    
+
     if(BUILD_VAULTIC)
         list(APPEND LIB_SOURCES wolfcrypt/src/port/wisekey/vaultic.c)
-    endif()  
+    endif()
 
     set(LIB_SOURCES ${LIB_SOURCES} PARENT_SCOPE)
 endfunction()

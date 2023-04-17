@@ -1488,12 +1488,12 @@ add_option("WOLFSSL_VAULTIC"
 
 if(WOLFSSL_VAULTIC)
     list(APPEND WOLFSSL_DEFINITIONS "-DWOLFSSL_VAULTIC" "-DHAVE_PK_CALLBACKS" )
-    if("${WOLFSSL_VAULTIC}" STREQUAL "420") 
+    if("${WOLFSSL_VAULTIC}" STREQUAL "420")
         list(APPEND WOLFSSL_DEFINITIONS "-DWOLFSSL_VAULTIC_NO_ECDH")
     endif()
 endif()
 
-add_option("WOLFSSL_VAULTIC_DEBUG" 
+add_option("WOLFSSL_VAULTIC_DEBUG"
     "Enable debug logs when using Vaultic (default: disabled)"
     "no" "yes;no")
 
@@ -1890,7 +1890,7 @@ if(WOLFSSL_EXAMPLES)
         set_property(TARGET tls_bench
                  PROPERTY RUNTIME_OUTPUT_DIRECTORY
                  ${WOLFSSL_OUTPUT_BASE}/examples/benchmark)
-                     
+
         if(WOLFSSL_VAULTIC)
             # Build VaultIC client-tls example
             add_executable(vaultic_client
@@ -1900,7 +1900,7 @@ if(WOLFSSL_EXAMPLES)
                          PROPERTY RUNTIME_OUTPUT_DIRECTORY
                          ${WOLFSSL_OUTPUT_BASE}/examples/vaultic_client)
         endif()
-                 
+
     endif()
 
     # Build unit tests

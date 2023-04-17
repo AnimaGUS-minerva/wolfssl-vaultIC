@@ -3,7 +3,7 @@
  * Example of TLS client using a VaultIC Secure Element.
  * based on wolfSSL client-tls example
  * https://github.com/wolfSSL/wolfssl-examples/tree/master/tls/client-tls.c
- 
+
  */
 
 /* the usual suspects */
@@ -81,7 +81,7 @@ int main(int argc, char** argv)
     /*---------------------------------*/
     /* Start of security */
     /*---------------------------------*/
-    
+
     /* Initialize wolfSSL */
     if ((ret = wolfSSL_Init()) != WOLFSSL_SUCCESS) {
         fprintf(stderr, "ERROR: Failed to initialize the library\n");
@@ -90,11 +90,11 @@ int main(int argc, char** argv)
 
     /* Create and initialize WOLFSSL_CTX */
     if ((ctx = wolfSSL_CTX_new(
-#ifdef WOLFSSL_TLS13    
+#ifdef WOLFSSL_TLS13
         wolfTLSv1_3_client_method()
 #else
         wolfTLSv1_2_client_method()
-#endif        
+#endif
         )) == NULL) {
         fprintf(stderr, "ERROR: failed to create WOLFSSL_CTX\n");
         ret = -1;
@@ -107,7 +107,7 @@ int main(int argc, char** argv)
         ret = -1;
         goto socket_cleanup;
     }
-    
+
     /* Load VaultIC certificates */
     if(( ret = WOLFSSL_VAULTIC_LoadCertificates(ctx)) != 0) {
         fprintf(stderr, "ERROR: failed to load VaultIC certificates.\n");

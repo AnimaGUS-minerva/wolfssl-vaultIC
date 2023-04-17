@@ -26,8 +26,8 @@ int WOLFSSL_VAULTIC_EccSharedSecretCb(WOLFSSL* ssl,
     unsigned char* pubKeyDer, unsigned int* pubKeySz,
     unsigned char* out, unsigned int* outlen,
     int side, void* ctx);
-    
-int WOLFSSL_VAULTIC_LoadCertificates(WOLFSSL_CTX* ctx); 
+
+int WOLFSSL_VAULTIC_LoadCertificates(WOLFSSL_CTX* ctx);
 
 /* Helper API's for setting up callbacks */
 int WOLFSSL_VAULTIC_SetupPkCallbacks(WOLFSSL_CTX* ctx);
