@@ -12,6 +12,7 @@ set(COMPONENT_SRCDIRS "./src/"
                       "./wolfcrypt/src/"
                       "./wolfcrypt/src/port/Espressif/"
                       "./wolfcrypt/src/port/atmel/"
+                      "./wolfcrypt/src/port/wisekey/"
                       )
 
 set(COMPONENT_REQUIRES lwip)
@@ -35,6 +36,10 @@ endif()
 
 if(IS_DIRECTORY ${IDF_PATH}/components/cryptoauthlib)
     list(APPEND COMPONENT_ADD_INCLUDEDIRS "../cryptoauthlib/lib")
+endif()
+
+if(CONFIG_WOLFSSL_VAULTIC_HW)
+    list(APPEND COMPONENT_ADD_INCLUDEDIRS "${IDF_PATH}/examples/peripherals/secure_element/vaultic_405/components/vaultic_wolfssl")
 endif()
 
 set(COMPONENT_SRCEXCLUDE

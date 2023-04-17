@@ -1,0 +1,17 @@
+# vim:ft=automake
+# All paths should be given relative to the root
+
+if BUILD_EXAMPLE_CLIENTS
+noinst_PROGRAMS += examples/vaultic_client/vaultic_client
+noinst_HEADERS += examples/vaultic_client/vaultic_client.h
+examples_client_client_SOURCES      = examples/vaultic_client/vaultic_client.c
+examples_client_client_LDADD        = src/libwolfssl.la $(LIB_STATIC_ADD) $(WOLFSENTRY_LIB)
+examples_client_client_DEPENDENCIES = src/libwolfssl.la
+examples_client_client_CFLAGS = $(WOLFSENTRY_INCLUDE) $(AM_CFLAGS)
+endif
+EXTRA_DIST += examples/vaultic_client/vaultic_client.sln
+EXTRA_DIST += examples/vaultic_client/vaultic_client.vcproj
+EXTRA_DIST += examples/vaultic_client/vaultic_client.vcxproj
+
+dist_example_DATA+= examples/vaultic_client/vaultic_client.c
+DISTCLEANFILES+= examples/vaultic_client/.libs/vaultic_client

@@ -28,6 +28,10 @@
 #define BENCH_EMBEDDED
 #define USE_CERT_BUFFERS_2048
 
+/* Useful settings for TLS debug           */
+//#define DEBUG_WOLFSSL
+//#define WOLFSSL_DEBUG_TLS
+
 /* TLS 1.3                                 */
 #define WOLFSSL_TLS13
 #define HAVE_TLS_EXTENSIONS
@@ -70,6 +74,18 @@
     /* unless your configuration is unusual, you can use default   */
     /* implementation.                                             */
     /* #define CUSTOM_SLOT_ALLOCATION                              */
+#endif
+
+/* VaultIC secure element                                */
+#ifdef WOLFSSL_ESPIDF
+#include "sdkconfig.h"
+#ifdef CONFIG_WOLFSSL_VAULTIC_HW
+#define WOLFSSL_VAULTIC
+#endif
+#endif
+
+#ifdef WOLFSSL_VAULTIC
+#define HAVE_PK_CALLBACKS
 #endif
 
 /* rsa primitive specific definition */

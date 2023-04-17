@@ -1480,6 +1480,28 @@ add_option("WOLFSSL_CRYPT_TESTS_LIBS"
     "Build static libraries from the wolfCrypt test and benchmark sources (default: disabled)"
     "no" "yes;no")
 
+# VaultIC Secure element
+
+add_option("WOLFSSL_VAULTIC"
+     "Enable compiling and using Vaultic (default: no)"
+     "no" "420;405;408;292")
+
+if(WOLFSSL_VAULTIC)
+    list(APPEND WOLFSSL_DEFINITIONS "-DWOLFSSL_VAULTIC" "-DHAVE_PK_CALLBACKS" )
+    if("${WOLFSSL_VAULTIC}" STREQUAL "420") 
+        list(APPEND WOLFSSL_DEFINITIONS "-DWOLFSSL_VAULTIC_NO_ECDH")
+    endif()
+endif()
+
+add_option("WOLFSSL_VAULTIC_DEBUG" 
+    "Enable debug logs when using Vaultic (default: disabled)"
+    "no" "yes;no")
+
+if(WOLFSSL_VAULTIC_DEBUG)
+    list(APPEND WOLFSSL_DEFINITIONS "-DWOLFSSL_VAULTIC_DEBUG")
+endif()
+
+
 # TODO: - LIBZ
 #       - PKCS#11
 #       - Cavium
@@ -1812,6 +1834,12 @@ else()
             m)
 endif()
 
+# VaultIC TLS library
+if(WOLFSSL_VAULTIC)
+    target_link_libraries(wolfssl PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/lib/libvaultic${WOLFSSL_VAULTIC}_tls.a)
+endif()
+
+
 ####################################################
 # Tests and Examples
 ####################################################
@@ -1862,6 +1890,17 @@ if(WOLFSSL_EXAMPLES)
         set_property(TARGET tls_bench
                  PROPERTY RUNTIME_OUTPUT_DIRECTORY
                  ${WOLFSSL_OUTPUT_BASE}/examples/benchmark)
+                     
+        if(WOLFSSL_VAULTIC)
+            # Build VaultIC client-tls example
+            add_executable(vaultic_client
+                ${CMAKE_CURRENT_SOURCE_DIR}/examples/vaultic_client/vaultic_client.c)
+            target_link_libraries(vaultic_client wolfssl)
+            set_property(TARGET vaultic_client
+                         PROPERTY RUNTIME_OUTPUT_DIRECTORY
+                         ${WOLFSSL_OUTPUT_BASE}/examples/vaultic_client)
+        endif()
+                 
     endif()
 
     # Build unit tests
